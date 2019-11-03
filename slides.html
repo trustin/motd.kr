@@ -35,7 +35,7 @@ body {
   height: 0.25em;
   width: 0;
   background-color: darkgray;
-  transition: width 0.1s, background-color 0.1s;
+  transition: width 0.2s, background-color 0.5s;
 }
 
 .page {
@@ -271,7 +271,7 @@ function blinkProgressBar() {
   progressBar.style.backgroundColor = 'red';
   setTimeout(function() {
     progressBar.style.backgroundColor = 'darkgray';
-  }, 1500);
+  }, 500);
 }
 
 function handleLocationChange(force) {
