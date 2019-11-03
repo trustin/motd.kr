@@ -388,22 +388,31 @@ window.addEventListener('mouseup', function(e) {
 
 // Handle keyboard events.
 window.addEventListener('keydown', function(e) {
-  if (!pdfDoc) {
+  if (!pdfDoc || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
     return;
   }
 
-  var oldPageNum = curPageNum;
-  switch (e.keyCode) {
-    case 36: // Home
+  switch (e.key) {
+    case 'Home': // Home
       navigate('first');
       break;
-    case 35: // End
+    case 'End': // End
       navigate('last');
       break;
-    case 8: case 33: case 37: case 38: case 72: case 75: // Backspace, PageUp, Left, Up, H or K
+    case 'Backspace':
+    case 'PageUp':
+    case 'ArrowLeft':
+    case 'ArrowUp':
+    case 'h':
+    case 'k':
       navigate('prev');
       break;
-    case 32: case 34: case 39: case 40: case 74: case 76: // Space, PageDown, Right, Down, J or L
+    case ' ':
+    case 'PageDown':
+    case 'ArrowRight':
+    case 'ArrowDown':
+    case 'j':
+    case 'l':
       navigate('next');
       break;
   }
