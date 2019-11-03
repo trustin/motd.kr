@@ -35,30 +35,11 @@ body {
   height: 0.25em;
   width: 0;
   background-color: darkgray;
-  transition: width 0.1s;
+  transition: width 0.1s, background-color 0.1s;
 }
 
 .page {
   display: none;
-}
-
-#toasts {
-  position: absolute;
-  top: 45%;
-  width: 100%;
-}
-
-#toasts div {
-  font-size: 1.5em;
-  font-weight: bold;
-  text-align: center;
-  transition: opacity 1.5s;
-}
-
-#toasts div span {
-  color: white;
-  background-color: rgba(0, 0, 0, 0.75);
-  padding: 6px 8px;
 }
 
 #fullscreen {
@@ -94,7 +75,6 @@ html:fullscreen #fullscreen {
   </div>
   <div id="bottom"></div>
 </div>
-<div id="toasts"></div>
 <div id="fullscreen">
   <input type="button" value="Enter fullscreen" onclick="document.documentElement.requestFullscreen(); return false;">
 </div>
@@ -277,33 +257,21 @@ function navigate(command) {
 
   if (curPageNum !== oldPageNum) {
     loadAndShowPage(curPageNum);
-  } else if (curPageNum === numPages) {
-    toast("The end of the slides");
-  } else if (curPageNum === 1) {
-    toast("The beginning of the slides");
+  } else if (curPageNum === numPages || curPageNum === 1) {
+    blinkProgressBar();
   }
 }
 
-function toast(msg) {
-  var toasts = document.getElementById('toasts');
-  if (toasts.children.length !== 0) {
-    // There's a toast in progress.
+function blinkProgressBar() {
+  var progressBar = document.getElementById('progressBar');
+  if (progressBar.style.backgroundColor === 'red') {
     return;
   }
-
-  // Insert a new toast.
-  var div = document.createElement('div');
-  var span = document.createElement('span');
-  span.appendChild(document.createTextNode(msg));
-  div.appendChild(span);
-  div.style.opacity = '1';
-  document.getElementById('toasts').appendChild(div);
+  
+  progressBar.style.backgroundColor = 'red';
   setTimeout(function() {
-    div.style.opacity = '0';
-    setTimeout(function() {
-      div.remove();
-    }, 1500);
-  }, 50);
+    progressBar.style.backgroundColor = 'darkgray';
+  }, 1500);
 }
 
 function handleLocationChange(force) {
