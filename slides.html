@@ -205,6 +205,12 @@ function preloadNearestPages(pageNum) {
 }
 
 function showPage(pageNum) {
+  // Remove the initial spinner.
+  var spinner = document.getElementById('spinner');
+  if (spinner) {
+    spinner.remove();
+  }
+
   // Show the page first.
   pages[pageNum].div.style.display = 'block';
 
@@ -334,8 +340,7 @@ loadingTask.promise.then(function(result) {
 
   pdfDoc = result;
 
-  // Remove the spinner and begin to render.
-  document.getElementById('spinner').remove();
+  // Begin to render.
   handleLocationChange(true);
 });
 
