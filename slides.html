@@ -64,6 +64,20 @@ html:fullscreen #fullscreen {
   display: none;
 }
 </style>
+<script>
+function openFullscreen() {
+  var e = document.documentElement;
+  if (e.requestFullscreen) {
+    e.requestFullscreen();
+  } else if (e.mozRequestFullScreen) {
+    e.mozRequestFullScreen();
+  } else if (e.webkitRequestFullscreen) {
+    e.webkitRequestFullscreen();
+  } else if (e.msRequestFullscreen) {
+    e.msRequestFullscreen();
+  }
+}
+</script>
 </head>
 <body>
 <div id="wrapper">
@@ -76,7 +90,7 @@ html:fullscreen #fullscreen {
   <div id="bottom"></div>
 </div>
 <div id="fullscreen">
-  <input type="button" value="Enter fullscreen" onclick="document.documentElement.requestFullscreen(); return false;">
+  <input type="button" value="Enter fullscreen" onclick="openFullscreen();">
 </div>
 <script>
 'use strict';
