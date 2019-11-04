@@ -44,6 +44,8 @@ body {
   display: none;
 }
 
+/* Fullscreen button */
+
 #fullscreen {
   position: absolute;
   bottom: 0;
@@ -65,6 +67,48 @@ body {
 html:fullscreen #fullscreen {
   display: none;
 }
+
+/* Nudge arrow */
+
+#arrow {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 5vh;
+  width: 5vh;
+  height: 5vh;
+  margin: -20px 0 0 -20px;
+  transform: rotate(-45deg);
+  border-left: none;
+  border-top: none;
+  border-right: solid 0.25em darkgray;
+  border-bottom: solid 0.25em darkgray;
+}
+
+#arrow:before {
+  position: absolute;
+  top: 0;
+  content: '';
+  width: 5vh;
+  height: 5vh;
+  border-left: none;
+  border-top: none;
+  border-right: solid 0.25em darkgray;
+  border-bottom: solid 0.25em darkgray;
+  animation-duration: 2.5s;
+  animation-iteration-count: infinite;
+  animation-name: arrow;
+}
+
+@keyframes arrow {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-2vh, -2vh);
+  }
+}
 </style>
 <script>
 </script>
@@ -79,6 +123,7 @@ html:fullscreen #fullscreen {
   </div>
   <div id="bottom"></div>
 </div>
+<div id="arrow"></div>
 <script>
 'use strict';
 
@@ -235,7 +280,7 @@ function showPage(pageNum) {
   // Show the page first.
   pages[pageNum].div.style.display = 'block';
 
-  // Hide or delete other pages.
+  // Hide other pages.
   for (var i = 1; i < pages.length; i++) {
     if (i === pageNum) {
       continue;
@@ -300,6 +345,13 @@ function navigate(command) {
   }
 
   if (curPageNum !== oldPageNum) {
+    // Remove the initial nudge arrow.
+    var arrow = document.getElementById('arrow');
+    if (arrow) {
+      arrow.remove();
+    }
+
+    // Turn the page.
     loadAndShowPage(curPageNum);
   } else if (curPageNum === numPages || curPageNum === 1) {
     blinkProgressBar();
@@ -356,6 +408,9 @@ loadingTask.promise.then(function(result) {
   }
 
   pdfDoc = result;
+
+  // Show the nudge arrow.
+  document.getElementById('arrow').style.display = 'block';
 
   // Set title and begin to render.
   pdfDoc.getMetadata().then(function(metadata) {
