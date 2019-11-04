@@ -83,6 +83,9 @@ html:fullscreen #fullscreen {
   border-top: none;
   border-right: solid 0.2em darkgray;
   border-bottom: solid 0.2em darkgray;
+  animation-duration: 2.5s;
+  animation-iteration-count: infinite;
+  animation-name: main;
 }
 
 #arrow:before {
@@ -98,6 +101,16 @@ html:fullscreen #fullscreen {
   animation-duration: 2.5s;
   animation-iteration-count: infinite;
   animation-name: arrow;
+}
+
+@keyframes main {
+  0%, 100% {
+    border-color: red;
+  }
+
+  45%, 95% {
+    border-color: darkgray;
+  }
 }
 
 @keyframes arrow {
