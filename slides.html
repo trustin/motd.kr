@@ -135,6 +135,9 @@ var loadingTask = pdfjsLib.getDocument({
   cMapPacked: true
 });
 loadingTask.onProgress = function(progress) {
+  if (pdfDoc) {
+    return;
+  }
   setProgress(progress.loaded, progress.total);
 };
 var drawing = false;
