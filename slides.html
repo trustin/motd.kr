@@ -275,6 +275,8 @@ function showPage(pageNum) {
   var spinner = document.getElementById('spinner');
   if (spinner) {
     spinner.remove();
+    // Show the nudge arrow.
+    document.getElementById('arrow').style.display = 'block';
   }
 
   // Show the page first.
@@ -408,9 +410,6 @@ loadingTask.promise.then(function(result) {
   }
 
   pdfDoc = result;
-
-  // Show the nudge arrow.
-  document.getElementById('arrow').style.display = 'block';
 
   // Set title and begin to render.
   pdfDoc.getMetadata().then(function(metadata) {
