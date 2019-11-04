@@ -2,6 +2,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <title>Loading the slides ...</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf_viewer.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/pdf.js"></script>
@@ -124,6 +126,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs
 
 var curPageNum = 1;
 var pdfDoc = null;
+var pdfTitle = '';
 var numPages = 0;
 var pages = [];
 var loadingTask = pdfjsLib.getDocument({
@@ -131,6 +134,9 @@ var loadingTask = pdfjsLib.getDocument({
   cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.3.200/cmaps/',
   cMapPacked: true
 });
+loadingTask.onProgress = function(progress) {
+  setProgress(progress.loaded, progress.total);
+};
 var drawing = false;
 
 function loadAndShowPage(pageNum) {
@@ -239,8 +245,7 @@ function showPage(pageNum) {
   }
 
   // Update the progress.
-  var progressBar = document.getElementById('progressBar');
-  progressBar.style.width = pageNum * 100 / numPages + '%';
+  setProgress(pageNum, numPages);
 
   // Update the history.
   if (pageNum === 1) {
@@ -254,7 +259,11 @@ function showPage(pageNum) {
     }
   }
 
-  window.document.title = 'Slide ' + pageNum + ' of ' + numPages;
+  if (pdfTitle !== '') {
+    document.title = pdfTitle + ' (Slide ' + pageNum + ' of ' + numPages + ')';
+  } else {
+    document.title = 'Slide ' + pageNum + ' of ' + numPages;
+  }
 }
 
 function deletePage(pageNum) {
@@ -292,6 +301,11 @@ function navigate(command) {
   } else if (curPageNum === numPages || curPageNum === 1) {
     blinkProgressBar();
   }
+}
+
+function setProgress(current, total) {
+  var progressBar = document.getElementById('progressBar');
+  progressBar.style.width = current * 100 / total + '%';
 }
 
 function blinkProgressBar() {
@@ -340,8 +354,15 @@ loadingTask.promise.then(function(result) {
 
   pdfDoc = result;
 
-  // Begin to render.
-  handleLocationChange(true);
+  // Set title and begin to render.
+  pdfDoc.getMetadata().then(function(metadata) {
+    if (metadata.info && metadata.info.Title) {
+      pdfTitle = String(metadata.info.Title).trim();
+    }
+    handleLocationChange(true);
+  }).catch(function(metadata) {
+    handleLocationChange(true);
+  });
 });
 
 // Handle resize/fullscreen events.
