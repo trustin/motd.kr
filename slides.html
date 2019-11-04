@@ -85,7 +85,7 @@ html:fullscreen #fullscreen {
   border-bottom: solid 0.2em darkgray;
   animation-duration: 2.5s;
   animation-iteration-count: infinite;
-  animation-name: main;
+  animation-name: arrow;
 }
 
 #arrow:before {
@@ -100,12 +100,12 @@ html:fullscreen #fullscreen {
   border-bottom: solid 0.2em darkgray;
   animation-duration: 2.5s;
   animation-iteration-count: infinite;
-  animation-name: arrow;
+  animation-name: arrow-thrust;
 }
 
-@keyframes main {
+@keyframes arrow {
   0%, 100% {
-    border-color: red;
+    border-color: #ff0089;
   }
 
   45%, 95% {
@@ -113,7 +113,7 @@ html:fullscreen #fullscreen {
   }
 }
 
-@keyframes arrow {
+@keyframes arrow-thrust {
   0% {
     opacity: 1;
   }
@@ -380,11 +380,7 @@ function setProgress(current, total) {
 
 function blinkProgressBar() {
   var progressBar = document.getElementById('progressBar');
-  if (progressBar.style.backgroundColor === 'red') {
-    return;
-  }
-  
-  progressBar.style.backgroundColor = 'red';
+  progressBar.style.backgroundColor = '#ff0089';
   setTimeout(function() {
     progressBar.style.backgroundColor = 'darkgray';
   }, 500);
